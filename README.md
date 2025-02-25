@@ -77,7 +77,7 @@ import { SnackbarProvider, useSnackbar } from 'notistack';
 </SnackbarProvider>
 
 const MyButton = () => {
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const { enqueueSnackbar, closeSnackbar, updateSnackbar } = useSnackbar();
   return <Button onClick={() => enqueueSnackbar('I love hooks')}>Show snackbar</Button>;
 };
 ```

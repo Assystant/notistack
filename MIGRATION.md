@@ -49,7 +49,7 @@ variant, use a [custom component](#8-new-components-prop). [This example](https:
   * Option 2: Remove `withSnackbar` and import the function(s) you need directly from `notistack`:
 ```diff
 - import { withSnackbar } from 'notistack' 
-+ import { enqueueSnackbar, closeSnackbar } from 'notistack' 
++ import { enqueueSnackbar, closeSnackbar, updateSnackbar } from 'notistack' 
 
 class MyButton extends React.Component {
     render() {

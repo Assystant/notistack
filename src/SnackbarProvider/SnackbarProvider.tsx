@@ -37,12 +37,15 @@ interface State {
 
 export let enqueueSnackbar: ProviderContext['enqueueSnackbar'];
 export let closeSnackbar: ProviderContext['closeSnackbar'];
+export let updateSnackbar: ProviderContext['updateSnackbar'];
+
 
 class SnackbarProvider extends Component<SnackbarProviderProps, State> {
     constructor(props: SnackbarProviderProps) {
         super(props);
         enqueueSnackbar = this.enqueueSnackbar;
         closeSnackbar = this.closeSnackbar;
+        updateSnackbar = this.updateSnackbar;
 
         this.state = {
             snacks: [],
@@ -50,6 +53,7 @@ class SnackbarProvider extends Component<SnackbarProviderProps, State> {
             contextValue: {
                 enqueueSnackbar: this.enqueueSnackbar.bind(this),
                 closeSnackbar: this.closeSnackbar.bind(this),
+                updateSnackbar: this.updateSnackbar.bind(this),
             },
         };
     }
@@ -290,6 +294,31 @@ class SnackbarProvider extends Component<SnackbarProviderProps, State> {
             return this.handleDismissOldest(newState);
         });
     };
+
+    /**
+     * Update a snack's content.
+     */
+    handleUpdateSnack = (content: SnackbarMessage, key?: SnackbarKey) => {
+        this.setState(({ snacks }: State) => ({
+            snacks: snacks.map((item: InternalSnack) => (
+                item.id === key ? { ...item, content: content } : { ...item }
+            )),
+        }));
+    }
+
+    /**
+     * Update existing snackbar message with the given key
+     */
+    updateSnackbar: ProviderContext['updateSnackbar'] = (
+        key?: SnackbarKey,
+        content?: SnackbarMessage,
+    ) => {
+        const toBeUpdated = this.state.snacks.find((item: InternalSnack) => item.id === key);
+        if (isDefined(key) && toBeUpdated && toBeUpdated.onUpdate) {
+            toBeUpdated.onUpdate(null, 'instructed', content, key);
+        }
+        this.handleUpdateSnack(content, key);
+    }
 
     render(): JSX.Element {
         const { contextValue } = this.state;

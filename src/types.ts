@@ -406,11 +406,13 @@ interface EnqueueSnackbar {
 export interface ProviderContext {
     enqueueSnackbar: EnqueueSnackbar;
     closeSnackbar: (key?: SnackbarKey) => void;
+    updateSnackbar: (key?: SnackbarKey, content?: SnackbarMessage) => void;
 }
 
 export declare class SnackbarProvider extends React.Component<SnackbarProviderProps> {
     enqueueSnackbar: ProviderContext['enqueueSnackbar'];
     closeSnackbar: ProviderContext['closeSnackbar'];
+    updateSnackbar: ProviderContext['updateSnackbar'];
     render(): React.ReactNode;
 }
 
@@ -418,6 +420,7 @@ export declare function useSnackbar(): ProviderContext;
 
 export declare const enqueueSnackbar: ProviderContext['enqueueSnackbar'];
 export declare const closeSnackbar: ProviderContext['closeSnackbar'];
+export declare const updateSnackbar: ProviderContext['updateSnackbar'];
 
 export declare const SnackbarContent: (
     props: SnackbarContentProps & React.RefAttributes<HTMLDivElement>
